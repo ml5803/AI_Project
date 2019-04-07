@@ -9,6 +9,13 @@ class Node:
         self.cost = self.cost_function(goal, option)
         self.parent = parent
 
+    def cost(goal,option = 1):
+        #g(n) = depth, h(n) = sum of manhattan_distance (+ 2 * linear_conflicts)
+        cost = self.depth + sum_manhattan(self.state, goal)
+        if option == 2:
+            cost += 2 * num_linear_conflicts(self.state, goal)
+        return cost
+
 #makes a 2D list of initial and goal states
 def make_initial_goal(file):
     init = []
@@ -60,6 +67,30 @@ def manhattan_distance(state, goal):
         sum += abs(goal_row - init_row) + abs(goal_col - init_col)
     return sum
 
+def linear_conflicts(state,goal):
+    state = convert_dict(state)
+    goal = convert_dict(goal)
+    sum = 0
+
+    for i in range(1, 9):
+        initial1_row, initial1_col = state[i][0], state[i][1]
+        for j in range(1, 9):
+            initial2_row, initial2_col = state[j][0], state[j][1]
+            #check if on same row or col on state
+            check_row = (initial2_row == initial1_row and initial2_col > initial1_col)
+            check_col = (initial2_col == initial1_col and initial2_row > initial1_row)
+            if check_row or check_col:
+                goal_initial2_row, goal_initial2_col = goal[j][0], goal[j][1]
+                goal_initial1_row, goal_initial1_col = goal[i][0], goal[i][1]
+                #check if conflicts exist on goal state
+                check_row_goal = (goal_initial2_row == goal_initial1_row and goal_initial2_col < goal_initial1_col) and (initial2_row == goal_initial2_row)
+                check_col_goal = (goal_initial2_col == goal_initial1_col and goal_initial2_row < goal_initial1_row) and (initial2_col == goal_initial2_col)
+                if check_row_goal or check_col_goal:
+                    print(i, "and",j," are conflicting")
+                    sum += 1
+
+    return sum
+
 if __name__ == "__main__":
     user_input = []
     user_input.append(input("Please enter the name of input file:\n"))
@@ -74,3 +105,4 @@ if __name__ == "__main__":
     print("Converted list:",convert_list(x))
 
     print("manhattan_distance: ", manhattan_distance(initial,goal))
+    print("linear conflicts: ", linear_conflicts(initial, goal))
