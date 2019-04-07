@@ -16,6 +16,21 @@ class Node:
             cost += 2 * num_linear_conflicts(self.state, goal)
         return cost
 
+class Puzzle:
+    def __init__(self,initial, goal):
+        self.node_count = 0
+        self.curr_state = initial
+        self.goal = goal
+        self.pq = PriorityQueue()
+
+    def check_goal():
+        for i in range(len(curr_state)):
+            for j in range(len(curr_state[0])):
+                if (curr_state[i][j] != goal[i][j]):
+                    return False
+        return True
+
+
 #makes a 2D list of initial and goal states
 def make_initial_goal(file):
     init = []
@@ -67,6 +82,7 @@ def manhattan_distance(state, goal):
         sum += abs(goal_row - init_row) + abs(goal_col - init_col)
     return sum
 
+#given a state and a goal, return # of linear conflicts
 def linear_conflicts(state,goal):
     state = convert_dict(state)
     goal = convert_dict(goal)
@@ -88,7 +104,6 @@ def linear_conflicts(state,goal):
                 if check_row_goal or check_col_goal:
                     print(i, "and",j," are conflicting")
                     sum += 1
-
     return sum
 
 if __name__ == "__main__":
@@ -106,3 +121,7 @@ if __name__ == "__main__":
 
     print("manhattan_distance: ", manhattan_distance(initial,goal))
     print("linear conflicts: ", linear_conflicts(initial, goal))
+
+    p = Puzzle(initial, goal)
+    while(!p.check_goal()):
+        pass
