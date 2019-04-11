@@ -1,3 +1,8 @@
+#Michael Li
+#CS 4613
+#8Puzzle
+
+#PYTHON3 ONLY PLEASE!
 try:
     import queue
 except ImportError:
