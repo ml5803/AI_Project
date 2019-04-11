@@ -40,14 +40,18 @@ class Puzzle:
 
         ptr = self.curr_state
         while(ptr.parent != None):
-            self.solution_actions.insert(0,ptr.move)
-            self.solution_costs.insert(0,ptr.cost)
+            self.solution_actions.append(ptr.move)
+            self.solution_costs.append(ptr.cost)
             ptr = ptr.parent
         #put root node cost into list
-        self.solution_costs.insert(0,ptr.cost)
-        print(self.solution_actions)
-        print(self.solution_costs)
+        self.solution_costs.append(ptr.cost)
 
+        for i in range(len(self.solution_actions)-1,-1,-1):
+            print(self.solution_actions[i],end = " ")
+        print()
+        for j in range(len(self.solution_costs)-1,-1,-1):
+            print(self.solution_costs[j],end = " ")
+        print()
         return self.curr_state #solution node
 
     def check_goal(self):
