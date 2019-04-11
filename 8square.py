@@ -104,6 +104,38 @@ class Puzzle:
         self.curr_state = self.pq.queue[0][2]
         print(self.node_count, self.curr_state.move,self.curr_state.cost, self.curr_state.state)
 
+    def make_output_file(self, filename, heuristic, initial, goal):
+        filename = "manhattan_distance_" + filename
+        if(heuristic == 2):
+            filename = "linear_conflict_" + filename
+        filename = "solution_" + filename
+        f= open(filename,"w+")
+
+        row = len(initial)
+        col = len(initial[0])
+
+        for i in range(row):
+            for j in range(col):
+                f.write(str(initial[i][j])+ " ")
+            f.write("\n")
+        f.write("\n")
+        for i in range(row):
+            for j in range(col):
+                f.write(str(goal[i][j]) + " ")
+            f.write("\n")
+
+        f.write("\n")
+
+        f.write(str(self.curr_state.depth) + "\n")
+        f.write(str(self.node_count )+ "\n")
+        for i in range(len(self.solution_actions)-1,-1,-1):
+            f.write(str(self.solution_actions[i]) + " ")
+
+        f.write("\n")
+        for j in range(len(self.solution_costs)-1,-1,-1):
+            f.write(str(self.solution_costs[j]) + " ")
+        return
+
 #makes a 2D list of initial and goal states
 def make_initial_goal(file):
     init = []
@@ -190,3 +222,4 @@ if __name__ == "__main__":
     p = Puzzle(initial, goal, user_input[1])
     # print(p.move("L"))
     p.solve()
+    p.make_output_file(user_input[0],user_input[1],initial,goal)
