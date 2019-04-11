@@ -37,8 +37,15 @@ class Puzzle:
 
         print("depth:" , self.curr_state.depth)
         print("# nodes generated: ", self.node_count)
+
+        ptr = self.curr_state
+        while(ptr.parent != None):
+            self.solution_actions.insert(0,ptr.move)
+            self.solution_costs.insert(0,ptr.cost)
+            ptr = ptr.parent
         print(self.solution_actions)
         print(self.solution_costs)
+
         return self.curr_state #solution node
 
     def check_goal(self):
@@ -90,8 +97,6 @@ class Puzzle:
         #update path records
         self.curr_state = self.pq.queue[0][2]
         print(self.node_count, self.curr_state.move,self.curr_state.cost, self.curr_state.state)
-        self.solution_actions.append(self.pq.queue[0][2].move)
-        self.solution_costs.append(self.pq.queue[0][0])
 
 #makes a 2D list of initial and goal states
 def make_initial_goal(file):
