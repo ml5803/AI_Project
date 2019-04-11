@@ -117,7 +117,7 @@ class Puzzle:
         self.curr_state = self.pq.queue[0][2]
         print(self.node_count, self.curr_state.move,self.curr_state.cost, self.curr_state.state)
 
-    #generates output file with name: solution_(linear_conflict_)manhattan_distance_filename.txt
+    #generates output file
     #lines 1 - 3 - initial state, lines 4-6 goal state, line 9 depth, line 10 total nodes generated (including invalid moves)
     #line 11 - actions of solution path, #line 12 - costs of solution path
     def make_output_file(self, filename, heuristic, initial, goal):
