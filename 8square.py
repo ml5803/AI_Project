@@ -105,7 +105,7 @@ class Puzzle:
         return state
 
     #updates curr_state with next expanded node
-    #prints here to show user that program running, may disable if desired.
+    #prints here to show user that updates to curr_state, may disable if desired.
     def next_state(self):
         #update curr_state with next expanded node without removing from pq
         #update path records
