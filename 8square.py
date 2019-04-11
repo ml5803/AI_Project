@@ -43,6 +43,8 @@ class Puzzle:
             self.solution_actions.insert(0,ptr.move)
             self.solution_costs.insert(0,ptr.cost)
             ptr = ptr.parent
+        #put root node cost into list
+        self.solution_costs.insert(0,ptr.cost)
         print(self.solution_actions)
         print(self.solution_costs)
 
