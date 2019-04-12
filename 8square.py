@@ -79,33 +79,35 @@ class Puzzle:
         if self.pq.empty():
             #if pq is empty, put initial in pq and expand - only in very first run
             self.pq.put((self.curr_state.cost,1, self.curr_state))
+            self.visited.append(self.curr_state.state)
         #if not empty, get lowest cost and expand
         to_expand = self.pq.get()
 
-        poss_expansions = {"L","R","U","D"}
+        poss_expansions = {"U","D","L","R"}
 
         for moves in poss_expansions:
             new_node = Node(self.move(moves),goal,moves, to_expand[2], self.option)
             if (new_node.state != None): #if it's a valid move
                 if(new_node.state not in self.visited): #if not visited, put Node in pq
                     self.pq.put((new_node.cost, self.node_count, new_node))
+                    #print(new_node.depth, new_node.cost, new_node.move, new_node.state)
                     self.node_count+=1
-                else: #valid move, but already reached before in frontier
-                    #need to update cost and node if cheaper node found
-                    for i in range(len(self.pq.queue)):
-                        existing_node = self.pq.queue[i] #is actually a tuple (cost, # generated, node)
-                        if (existing_node[2].state == new_node.state and existing_node[0] > new_node.cost): #cheaper node found
-                            new_pq = queue.PriorityQueue()
-                            #update pq of expandable nodes, update with cheaper node
-                            while (not self.pq.empty()):
-                                tup = self.pq.get()
-                                if (tup[0] > new_node.cost):
-                                    new_pq.put((new_node.cost, self.node_count, new_node))
-                                if (tup[2].state != new_node.state):
-                                    new_pq.put(tup)
-                            self.pq = new_pq
-                            self.node_count += 1
-                            return
+                # else: #valid move, but already reached before in frontier
+                #     #need to update cost and node if cheaper node found
+                #     for i in range(len(self.pq.queue)):
+                #         existing_node = self.pq.queue[i] #is actually a tuple (cost, # generated, node)
+                #         if (existing_node[2].state == new_node.state and existing_node[0] > new_node.cost): #cheaper node found
+                #             new_pq = queue.PriorityQueue()
+                #             #update pq of expandable nodes, update with cheaper node
+                #             while (not self.pq.empty()):
+                #                 tup = self.pq.get()
+                #                 if (tup[0] > new_node.cost):
+                #                     new_pq.put((new_node.cost, self.node_count, new_node))
+                #                 if (tup[2].state != new_node.state):
+                #                     new_pq.put(tup)
+                #             self.pq = new_pq
+                #             self.node_count += 1
+                #             return
 
     #given a move, create new 2d list representing state if that move was done
     #if move is not valid, return None - happens on edge cases e.g. 0 at [0,0] and move would be L or U
@@ -135,7 +137,7 @@ class Puzzle:
         #update path records
         self.curr_state = self.pq.queue[0][2]
         self.visited.append(self.curr_state.state)
-        print(self.node_count, self.curr_state.move,self.curr_state.cost, self.curr_state.state)
+        #print(self.curr_state.move,self.curr_state.cost, self.curr_state.state)
 
     #generates output file
     #lines 1 - 3 - initial state, lines 4-6 goal state, line 9 depth, line 10 total nodes generated (including invalid moves)
